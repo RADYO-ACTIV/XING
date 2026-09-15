@@ -26,10 +26,8 @@ def response(
             response_format={
         "type": "text",
         "mime_type": "application/json",
-        "schema": output_schema.model_json_schema()
-    }
-            input=question
-        )
+        "schema": output_schema.model_json_schema()},
+            input=question)
         if interaction.output_text:
           output = output_schema.model_validate_json(interaction.output_text)
           return output, None
