@@ -13,9 +13,9 @@ def get_users():
       "ready to work": "true"
     }
 
-@router.post("/{track}")
+@router.post("/get/")
 def get_user(track: str, difficulty: str):
-  prompt=f'generate questions on {track} with difficulty level {difficulty or 'mixed'}'
+  prompt=f'generate questions on history with difficulty level hard'
   
   try:
     result, error = response(question=prompt, output_schema=QuestionOutput, instructions=None)
