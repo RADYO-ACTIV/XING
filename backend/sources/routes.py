@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from generator import response
+from .generator import response
 from schema import QuestionsOutput
 
 router = APIRouter(
