@@ -16,26 +16,25 @@ def get_users():
 @route.post("/")
 def generate_questions(params: InputStructure):
     try:
-    data, error = response(
+      data, error = response(
       question=params,
-      output_schema=QuestionsOutput,
-    )
-    if data:
-      return{
-      "status": "success",
-      "data": data}
-    elif error:
-      raise HTTPException(
-        status_code=getattr(error, "code", 440),
-        detail={
-          "status_code": getattr(error, "code", 440),
-          "message": getattr(error, "message", str(error))
-          })
+      output_schema=QuestionsOutput,)
+      if data:
+        return{
+        "status": "success",
+        "data": data}
+      elif error:
+        raise HTTPException(
+          status_code=getattr(error, "code", 440),
+          detail={
+            "status_code": getattr(error, "code", 440),
+            "message": getattr(error, "message", str(error))
+            })
   
-  except HTTPException as exc:
+    except HTTPException as exc:
     raise exc
   
-  except Exception as err:
+    except Exception as err:
     raise HTTPException(
       status_code=500,
       detail="an unknown error occoured")
