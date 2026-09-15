@@ -8,3 +8,8 @@ class QuestionStructure(BaseModel):
   
 class QuestionsOutput(BaseModel):
   questions: List[QuestionStructure]
+
+class InputStructure(Basemodel):
+  difficulty: str=Field(description='difficulty level of the generated questions'),
+  topic: List[str],
+  questions: int=Field(description='number of questions to generate')
