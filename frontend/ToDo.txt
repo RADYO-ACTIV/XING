@@ -1,0 +1,7 @@
+switch up website theme - done
+improve layout(more responsive) -done
+randomize question order - done
+sync options with randomized question - done
+improve ux - done
+fix score count glitch - done
+ending remark - done

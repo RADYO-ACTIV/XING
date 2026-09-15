@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="5694744.png">
+  <link rel="stylesheet" href="css/index.css">
+  <title>QUIZMASTER</title>
+</head>
+<body>
+	<!-- <h1>Quizmaster</h1> -->
+<main id="body" class="container">
+<button id="muteAudio">Mute</button>
+
+<form class="data" id="intro">
+<fieldset class="game-data container">
+  <legend>Let's Get to Know You</legend>
+  <input type="text" name="name" class="edit" placeholder="What's Your Name?" required>
+  <button class="continue">Continue</button>
+</fieldset>
+</form>
+
+<form class="data" id="config">
+  <fieldset class="game-data">
+    <legend>Let's setup your quiz</legend>
+    <h3>Pick Your Topic</h3>
+    <div>
+      <label class="container"><input type="checkbox" value="science&tech" name="topic">&nbsp; Science and Tech</label>
+      <label class="container"><input type="checkbox" value="popCulture" name="topic">&nbsp; Pop Culture</label>
+      <label class="container"><input type="checkbox" value="literature" name="topic">&nbsp; Literature</label>
+      <label class="container"><input type="checkbox" value="generalKnowledge" name="topic">&nbsp; General Knowledge</label>
+      <label class="container"><input type="checkbox" value="geography" name="topic">&nbsp; Geography</label>
+      <label class="container"><input type="checkbox" value="history" name="topic">&nbsp; History</label>
+      <label class="container"><input type="checkbox" value="worldCulture" name="topic">&nbsp; World Culture</label>
+      <label class="container"><input type="checkbox" value="arts" name="topic">&nbsp; Arts</label>
+      <label class="container"><input type="checkbox" value="nostalgia&generations"  name="topic">&nbsp; Nostalgia and Generations</label>
+      <label class="container"><input type="checkbox" value="random" name="topic">&nbsp; Random</label>
+    </div>
+    &nbsp;
+    <h3>Set Your Difficulty Level</h3>
+    <div class="container" style="column-gap: 1rem;">
+      <label class="container"><input type="radio" name="difficulty" value="easy" required>easy</label>
+      <label class="container"><input type="radio" name="difficulty" value="medium">medium</label>
+      <label class="container"><input type="radio" name="difficulty" value="hard">hard</label>
+      <label class="container"><input type="radio" name="difficulty" value="bizzare">bizzare</label>
+      <label class="container"><input type="radio" name="difficulty" value="funny">funny</label>
+    </div>
+    &nbsp;
+    <h3>How Questions Do You Wanna Answer</h3><input type="number" name="questions" required value="20" max="50" plaplaceholder="5 - 50">
+    <button class="continue">Continue</button>
+  </fieldset>
+</form>
+
+<form class="data" id="duration">
+  <fieldset class="game-data">
+  <legend>Set Your Timer</legend>
+  <input type="number" name="minutes" min="0" max="10" value="03" class="edit" required> :
+  <input type="number" name="seconds" min="0" max="60" value="00" class="edit" required>
+  <button class="continue">READY!</button>
+  </fieldset>
+</form>
+<dialog id="dialog">
+  <h2>Instructions</h2>
+  <p>
+    Welcome <span data-summary='name'>[name]</span> to Quizmaster, a fun game that allows you to test out your knowledge on random stuffs ranging from science to history, fiction and film-making to writing. Anything you can think of.</p>
+    <p>You have chosen your difficulty level to be: <br> <span data-summary='difficulty'>[difficulty]</span></p>
+    <p>
+    And you've set your timer to <br> <span data-summary='duration'></span></p>
+    <p>
+      Each question is followed by four options, do ensure to read the question carefully and select your answer wisely.<br>
+    <strong style="text-align: center">HAVE FUN.</strong>
+    </p>
+  <button id="begin">Begin Quiz</button>
+</dialog>
+<section id="intro" class="data">3</section>
+<section class="data" id="stage">
+  <div class="game-info">
+    <p id="score">Points:</p>
+    <p id="timer">00:00</p>
+    <p id="difficultyIndicator">easy</p>
+  </div>
+  <div id="question-box">
+  <h1 id="response" class="data"></h1>
+    <h3 id="question"></h3>
+    <button class="option"></button>
+    <button class="option"></button>
+    <button class="option"></button>
+    <button class="option"></button>
+  </div>
+  <button id="nextQuestion">Next</button>
+</section>
+<section id="gameOver" class="data">
+  <h2 id="reason"></h2>
+  <h2>GAME OVER</h2>
+  <button id="endGame">END GAME</button>
+  </section>
+<section class="data" id="quizEnd">
+  <h2 class="end">QUIZ ENDED</h2>
+  <h3 class="end">
+    You Scored: <br>
+    <span id="finalScore"></span>
+  </h3>
+  <p>Total number of questions: 20</p>
+  <p id="answered">Number of questions Answered: </p>
+  <p id="passed">Number of questions passed: </p>
+  <p id="failed">Number of questions failed: </p>
+  <p id="analysis"></p>
+  <div class="container">
+  <button id="retry">Retake Quiz</button>
+  <button id="newQuiz">New Quiz</button>
+  </div>
+</section>
+</main>
+<audio src="./tracks/gameSound.mp3" class="tracks" id="bgAudio" loop></audio>
+<audio src="./tracks/wrong.mp3" class="tracks" id="wrongAudio"></audio>
+<audio src="./tracks/correct.mp3" class="tracks" id="correctAudio"></audio>
+</body>
+<script src="js/index.js" defer></script>
+</html>
