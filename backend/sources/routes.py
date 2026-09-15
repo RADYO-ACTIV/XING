@@ -32,9 +32,9 @@ def generate_questions(params: InputStructure):
             })
   
     except HTTPException as exc:
-    raise exc
+      raise exc
   
     except Exception as err:
-    raise HTTPException(
-      status_code=500,
-      detail="an unknown error occoured")
+      raise HTTPException(
+        status_code=500,
+        detail="an unknown error occoured")
