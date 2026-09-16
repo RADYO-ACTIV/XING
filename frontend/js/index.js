@@ -3,7 +3,7 @@
 // ===========================
 const LAST_FORM_INDEX = 2;
 const LAST_QUESTION_INDEX = 19;
-const ENDPOINT = '';
+const ENDPOINT = 'https://backend-ashy-six-149lx7mjla.vercel.app/questions/';
 const POINTS_PER_QUESTION = 3;
 let answerdQuestions = 0
 let questionsPassed = 0
@@ -231,10 +231,17 @@ function mute(){
   }
 }
 
-async function loadQuestions(endpoint, headers) {
+async function loadQuestions(endpoint, body) {
   try {
-    const response = await fetch('placeholder');
-    
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
