@@ -57,10 +57,10 @@ def generate_questions(params: InputStructure):
         "data": data}
       elif error:
         raise HTTPException(
-          status_code=getattr(error, "code", 440),
+          status_code=405,
           detail={
-            "status_code": getattr(error, "code", 440),
-            "message": getattr(error, "message", str(error))
+            "status_code": 440,
+            "message": str(error)
             })
   
     except HTTPException as exc:

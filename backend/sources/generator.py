@@ -5,7 +5,7 @@ from google.genai import errors, types
 
 # The function takes in a prompt and returns response as a json format
 def response(
-    question: str,
+    question,
     output_schema: Type[BaseModel],
     instructions: Optional[str] = None,
 )-> Tuple[Optional[BaseModel], Optional[Exception]]:
@@ -38,4 +38,12 @@ def response(
       return None, e
     except Exception as e:
       return None, e
-      
+
+
+class Answer(BaseModel):
+  answer: str=Field(description='question')
+
+data, error = response(question='hello',
+output_schema=Answer)
+
+print(data, error)
