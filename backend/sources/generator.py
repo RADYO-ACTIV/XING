@@ -16,18 +16,18 @@ def response(
         return None, ValueError("output_schema must be a Pydantic BaseModel subclass")
 
     # values initialization
-    config_instructions = instructions or "You are a helpful AI assistant that provides accurate, structured responses."
+    config_instruction = instructions or "You are a helpful AI assistant that provides accurate, structured responses."
     # api calling
     try:
         client = genai.Client()
         interaction = client.interactions.create(
-            model="gemini-3.6-flash",
+            model="gemini-3.8-flash",
             system_instruction=config_instruction,
+            input=question,
             response_format={
         "type": "text",
         "mime_type": "application/json",
-        "schema": output_schema.model_json_schema()},
-            input=question)
+        "schema": output_schema.model_json_schema()})
         if interaction.output_text:
           output = output_schema.model_validate_json(interaction.output_text)
           return output, None
