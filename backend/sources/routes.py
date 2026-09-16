@@ -6,6 +6,7 @@ router = APIRouter(
     prefix="/questions",
     tags=["Questions"]  # Groups routes in automatic Swagger docs
 )
+
 instruction='''You are supplied with a set of topics, difficulty level and the number of questions to generate. As an expert educational content designer and question-writer. Produce exactly the requested number of multiple-choice questions for the supplied topic at the supplied difficulty level, using the exact schema below (no extra text, no commentary, only valid JSON):
 
 [

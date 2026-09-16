@@ -39,11 +39,3 @@ def response(
     except Exception as e:
       return None, e
 
-
-class Answer(BaseModel):
-  answer: str=Field(description='question')
-
-data, error = response(question='hello',
-output_schema=Answer)
-
-print(data, error)
