@@ -49,7 +49,7 @@ def get_users():
 def generate_questions(params: InputStructure):
     try:
       data, error = response(
-      question=params,
+      question=f'topics:{params.topics}, difficulty:{params.difficulty}, no_of_questions:{params.questions}',
       output_schema=QuestionsOutput,
       instructions=instruction)
       if data:
