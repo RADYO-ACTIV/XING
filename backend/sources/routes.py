@@ -10,10 +10,9 @@ router = APIRouter(
 @router.get("/")
 def get_users():
     return {"status": "active",
-      "ready to work": "true"
-    }
+      "ready to work": "true"}
 
-@route.post("/")
+@router.post("/")
 def generate_questions(params: InputStructure):
     try:
       data, error = response(
