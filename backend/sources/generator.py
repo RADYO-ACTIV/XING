@@ -19,7 +19,7 @@ def response(
     config_instruction = instructions or "You are a helpful AI assistant that provides accurate, structured responses."
     # api calling
     try:
-        client = genai.Client(api_key='AIzaSyB3DhodtfUCC0IHXX6IrbQh3o-fTqj4ILk')
+        client = genai.Client()
         interaction = client.interactions.create(
             model="gemini-3.8-flash",
             system_instruction=config_instruction,
