@@ -21,7 +21,7 @@ const gameState = {
     seconds: 0},
   config: {
     difficulty: '',
-    topic: [],
+    topics: [],
     questions: ''},
   currentQuestionIndex: 0,
   currentIndex: 0,
@@ -241,10 +241,13 @@ async function loadQuestions(endpoint, body) {
       },
       body: JSON.stringify(body)
     });
-
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      const body = await response.json().catch(() => null);
+      throw new Error(`${body?.detail?.message}`);
     }
+    // if (!response.ok) {
+    //   throw new Error(`HTTP ${response.status}`);
+    // }
     
     gameState.questions = await response.json();
     
@@ -255,7 +258,7 @@ async function loadQuestions(endpoint, body) {
     
     console.log(`Loaded ${gameState.questions.length} questions`);
   } catch (error) {
-    throw new Error(`Failed to load questions: ${error.message}`);
+    throw new Error(`${error.message}`);
   }
 }
 

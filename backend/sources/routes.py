@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from sources.generator import response
+from sources.generator import Response
 from sources.schema import InputStructure, QuestionsOutput
 
 router = APIRouter(
@@ -48,9 +48,8 @@ def get_users():
 @router.post("/")
 def generate_questions(params: InputStructure):
     try:
-      data, error = response(
+      data, error = Response.deepseek(
       question=str(params),
-      output_schema=QuestionsOutput,
       instructions=instruction)
       if data:
         return{
@@ -58,9 +57,9 @@ def generate_questions(params: InputStructure):
         "data": data}
       elif error:
         raise HTTPException(
-          status_code=405,
+          status_code=502,
           detail={
-            "status_code": 440,
+            "status_code": 502,
             "message": str(error)
             })
   

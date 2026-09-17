@@ -1,7 +1,7 @@
 # XING
 **a simple quiz app made for you to have fun**
 
-### **[QUIZMASTER LIVE]()**
+### **[XING]()**
 
 Its not your typical quiz app, it's a fun mini web-based quiz app that uses AI to generate questions custom to thevusers choice. It features user game data validation (players name,selected topics, difficulty level and quiz duration)
 
