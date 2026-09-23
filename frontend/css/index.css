@@ -1,0 +1,156 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: currentcolor;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  scroll-behavior: smooth;
+}
+:root{
+  --border: 10px;
+  --bg: #fffff7;
+}
+.container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+input, button{
+  border: 1px solid #94A3B8;
+  border-radius: 3px;
+}
+@keyframes pulse{
+  0%{
+    scale: 1;
+  }50%{
+    scale: 1.1;
+  }100%{
+    scale: 1;
+  }
+}
+#body{
+  min-height: 100vh;
+  background: url(../bg.webp) center no-repeat;
+  background-size: 100% 100%;
+  padding: .5rem;
+}
+.data{
+  display: none;
+}
+.data.active{
+  display: block;
+}
+legend{
+  text-transform: capitalize;
+}
+legend, span, #stage p, #analysis{
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+fieldset.game-data{
+  border-radius: var(--border);
+  border: 3px solid black;
+  box-shadow: 0 0 100px #94A3Bf;
+  padding: .5rem;
+  gap: .5rem;
+  background: var(--bg);
+}
+.game-data input, fieldset button{
+  height: 2rem;
+  font-size: 1rem;
+  padding: .5em;
+}
+#dialog{
+  animation: pulse 2s linear infinite;
+  border-radius: var(--border);
+  border: 3px solid #94A3B8;
+  height: 60%;
+  width: 90%;
+  margin: auto;
+  padding: .5rem;
+  background: var(-bg);
+}
+#dialog p, #quizEnd p{
+  margin-top: .8rem;
+}
+#stage{
+  height: stretch;
+  width: stretch;
+  padding: .5rem;
+}
+#question-box, #quizEnd{
+  width: 100%;
+  padding: .5rem;
+  border-radius: var(--border);
+  margin-top: 30%;
+  background: var(--bg);
+  gap: 3rem;
+  border: 3px solid #94A3B8;
+}
+#question-box.correct{
+  border: 3px solid green;
+}
+#question-box.wrong{
+  border: 3px solid red;
+}
+#question{
+  font-size: 1.5rem;
+}
+#nextQuestion, #begin, #retry, #newQuiz, #endGame{
+  margin: auto;
+  padding: .5rem;
+  display: block;
+  margin-top: 2rem;
+  font-size: 1rem;
+  font-weight: 900;
+}
+.end, strong, #dialog h2, #gameOver h2{
+  text-align: center;
+  display: block;
+  margin: .6rem 0;
+}
+.option{
+  width: 100%;
+  padding: .5rem;
+  font-size: 1.5rem;
+  text-align: left;
+  margin-top: 1rem;
+}
+#response{
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+}
+.correct{
+  display: block;
+  background: linear-gradient(90deg, #9ebd13 10%, #008552 90%);
+}
+.wrong{
+  display: block;
+  background: linear-gradient(90deg, #d53316 0%, #daae99 100%);
+}
+#muteAudio{
+  position: absolute;
+  display: none;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: .5rem;
+  border: 4px solid red;
+  border-radius: 10px;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+#muteAudio.hide{
+  display: block;
+}
+#intro{
+  font-weight: 900;
+  font-size: 7rem;
+  text-align: center;
+}
+label.container{
+  justify-content: flex-start;
+}
