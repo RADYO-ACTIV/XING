@@ -3,7 +3,7 @@
 // ===========================
 const LAST_FORM_INDEX = 2;
 let LAST_QUESTION_INDEX = 9;
-const ENDPOINT = 'https://backend-ashy-six-149lx7mjla.vercel.app/questions/';
+const ENDPOINT = 'https://xingback.vercel.app/questions/';
 const POINTS_PER_QUESTION = 3;
 let answerdQuestions = 0
 let questionsPassed = 0
