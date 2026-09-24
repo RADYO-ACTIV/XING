@@ -6,8 +6,8 @@ app = FastAPI()
 
 origins = [
     "http://localhost:8158",
-    "https://xing-tau.vercel.app/",
-    "https://www.xing-tau.vercel.app/",
+    "https://xing-tau.vercel.app",
+    "https://www.xing-tau.vercel.app",
     "http://localhost:5173"
     
 ]
