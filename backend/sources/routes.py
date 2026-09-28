@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+import asyncio
 from sources.generator import Response
 from sources.schema import InputStructure, QuestionsOutput
 
@@ -49,6 +50,18 @@ def get_users():
 def generate_questions(params: InputStructure):
     model = Response(question=str(params),
       instructions=instruction)
+    n = params.questions
+    parts = [c for c in (n // 3 + (i < n % 3) for i in range(3)) if c]
+    results = await asyncio.gather(*[
+        model.gemini(QuestionsOutput)
+        for c in parts
+    ])
+    questions = []
+    for data, error in results:
+        if error:
+            raise HTTPException(502, detail=str(error))
+        questions += data.questions
+    return {"status": "success", "data": {"questions": questions}}
     try:
       data, error = model.gemini(output_schema=QuestionsOutput)
       if data:

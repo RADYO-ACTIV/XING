@@ -3,7 +3,7 @@
 // ===========================
 const LAST_FORM_INDEX = 2;
 let LAST_QUESTION_INDEX = 9;
-const ENDPOINT = 'https://backend-ashy-six-149lx7mjla.vercel.app/questions/';
+const ENDPOINT = 'https://xingback.vercel.app/questions/';
 const POINTS_PER_QUESTION = 3;
 let answerdQuestions = 0
 let questionsPassed = 0
@@ -71,21 +71,6 @@ const elements = {
 // ===========================
 function init() {
   // Cache all DOM elements
-  cacheElements();
-  
-  // Validate required elements exist
-  if (!validateDOM()) {
-    console.error('Required DOM elements not found');
-    return}
-  // Setup event listeners
-  setupFormHandlers()
-  setupBeginButtonHandler()
-  
-  // Show initial form
-  showInitialForm()}
-
-// Cache all DOM elements at startup
-function cacheElements() {
   elements.forms = document.querySelectorAll('.data');
   elements.dialog = document.getElementById('dialog');
   elements.beginButton = document.getElementById('begin');
@@ -110,26 +95,13 @@ function cacheElements() {
   elements.endGame =document.getElementById('endGame')
   elements.loading = document.getElementById('loading')
   
-  // Note: optionsContainer will be queried fresh each time we need it
-}
-
-// Validate that all required DOM elements exist
-function validateDOM() {
   const optionsCheck = document.querySelectorAll('.option');
+  // Setup event listeners
+  setupFormHandlers()
+  setupBeginButtonHandler()
   
-  return (
-    elements.forms?.length > 0 &&
-    elements.dialog &&
-    elements.beginButton &&
-    elements.timerDisplay &&
-    elements.questionsDisplay &&
-    elements.questionContainer &&
-    optionsCheck?.length > 0 &&
-    elements.nextButton &&
-    elements.score &&
-    elements.quizEnd
-  );
-}
+  // Show initial form
+  showInitialForm()}
 
 // Determine and show the appropriate initial form
 function showInitialForm() {
@@ -248,7 +220,7 @@ async function loadQuestions(endpoint, body) {
     }
     
     content = await response.json();
-    gameState.questions = content.data.questions
+    gameState.questions = content
     console.log(content)
     // Validate questions structure
     if (!Array.isArray(gameState.questions) || gameState.questions.length === 0) {
@@ -391,7 +363,6 @@ function displayCurrentQuestion() {
 }
 
 function displayOptions(question, questionIndex) {
-  // ✅ CRITICAL FIX: Query fresh NodeList each time
   const optionElements = document.querySelectorAll('.option');
   
   elements.response.classList.remove('correct', 'wrong');
@@ -413,7 +384,6 @@ function displayOptions(question, questionIndex) {
   setupOptionClickHandlers();
 }
 
-// ✅ NEW: Event delegation pattern for options
 let optionClickHandler = null;
 
 function setupOptionClickHandlers() {
@@ -548,32 +518,20 @@ function displayFinalScore() {
   if (finalScoreElement) {
     let totalPossible = 0
     let scoreAnimation = setInterval(pee, 100)
-    const highScore = parseInt(checkHighScore())
 
     
     function pee(){
     const total = (LAST_QUESTION_INDEX+1)*POINTS_PER_QUESTION
     const percentage = Math.round((totalPossible / total) * 100);
-      if (gameState.difficulty != 'endless'){
-      finalScoreElement.textContent = `${totalPossible} (${percentage}%)/${total}`;
-      numberfailed.textContent = `Number of Questions Failed: ${(LAST_QUESTION_INDEX+1) - questionsPassed}`
-      analyses.textContent = analysis(gameState.points)
+    
+    finalScoreElement.textContent = `${totalPossible} (${percentage}%)/${total}`;
+    numberfailed.textContent = `Number of Questions Failed: ${(LAST_QUESTION_INDEX+1) - questionsPassed}`
+    analyses.textContent = analysis(gameState.points)
+    if(totalPossible < gameState.points){
+      totalPossible++
     }else{
-      finalScoreElement.textContent = `${totalPossible}`
-      numberfailed.textContent = `Number of Questions Failed: ${answerdQuestions - questionsPassed}`
-      if (gameState.points > highScore){
-        analyses.textContent = 'New High Score'
-        localStorage.setItem('highScore', String(gameState.points))
-      }else{
-        analyses.textContent=`Your High Score: ${highScore}`
-      }
-    }
-      if(totalPossible < gameState.points){
-        totalPossible++
-      }else{
-        clearInterval(scoreAnimation)
-      }
-    }
+      clearInterval(scoreAnimation)
+    }}
     numberAnswered.textContent = `Number of Questions Answered: ${answerdQuestions}`
     numberPassed.textContent = `Number of Questions Passed: ${questionsPassed}`
     elements.newQuiz.addEventListener('click', ()=>{location.reload()})
@@ -588,19 +546,11 @@ function analysis(score, total){
     return 'Your Made Below Average'
   }else if (score == (total*0.5)){
     return 'You Hit The Mid-point Mark'
-  }else if(score <= (total-1)){
+  }else if(score >= (total-1)){
     return 'You Made More Than Half'
   }else{
     return 'You Had a Perfect Score'
   }
-}
-
-function checkHighScore(){
-  const highScore = localStorage.getItem('highScore')
-  if(!highScore){
-    localStorage.setItem('highScore', '0')
-  }
-  return highScore
 }
 
 function retake(){
@@ -614,10 +564,9 @@ function cleanup() {
   // Remove option click handler if exists
   if (optionClickHandler && elements.questionsDisplay) {
     elements.questionsDisplay.removeEventListener('click', optionClickHandler);
-    // elements.retryQuiz.addEventListener('click', retake)
   }
 }
 
 // EVENT LISTENERS
-document.addEventListener('DOMContentLoaded', init);
 window.addEventListener('beforeunload', cleanup);
+document.addEventListener('DOMContentLoaded', init);
