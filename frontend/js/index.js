@@ -71,21 +71,7 @@ const elements = {
 // ===========================
 function init() {
   // Cache all DOM elements
-  cacheElements();
-  
-  // Validate required elements exist
-  if (!validateDOM()) {
-    console.error('Required DOM elements not found');
-    return}
-  // Setup event listeners
-  setupFormHandlers()
-  setupBeginButtonHandler()
-  
-  // Show initial form
-  showInitialForm()}
-
-// Cache all DOM elements at startup
-function cacheElements() {
+  {
   elements.forms = document.querySelectorAll('.data');
   elements.dialog = document.getElementById('dialog');
   elements.beginButton = document.getElementById('begin');
@@ -112,24 +98,13 @@ function cacheElements() {
   
   // Note: optionsContainer will be queried fresh each time we need it
 }
-
-// Validate that all required DOM elements exist
-function validateDOM() {
-  const optionsCheck = document.querySelectorAll('.option');
+  // Setup event listeners
+  setupFormHandlers()
+  setupBeginButtonHandler()
   
-  return (
-    elements.forms?.length > 0 &&
-    elements.dialog &&
-    elements.beginButton &&
-    elements.timerDisplay &&
-    elements.questionsDisplay &&
-    elements.questionContainer &&
-    optionsCheck?.length > 0 &&
-    elements.nextButton &&
-    elements.score &&
-    elements.quizEnd
-  );
-}
+  // Show initial form
+  showInitialForm()}
+
 
 // Determine and show the appropriate initial form
 function showInitialForm() {

@@ -46,40 +46,29 @@ def get_users():
     return {"status": "active",
       "ready to work": "true"}
 
+
 @router.post("/")
-def generate_questions(params: InputStructure):
-    model = Response(question=str(params),
-      instructions=instruction)
+async def generate_questions(params: InputStructure):
     n = params.questions
     parts = [c for c in (n // 3 + (i < n % 3) for i in range(3)) if c]
-    results = await asyncio.gather(*[
-        model.gemini(QuestionsOutput)
-        for c in parts
-    ])
-    questions = []
-    for data, error in results:
-        if error:
-            raise HTTPException(502, detail=str(error))
-        questions += data.questions
-    return {"status": "success", "data": {"questions": questions}}
+
     try:
-      data, error = model.gemini(output_schema=QuestionsOutput)
-      if data:
-        return{
-        "status": "success",
-        "data": data}
-      elif error:
-        raise HTTPException(
-          status_code=502,
-          detail={
-            "status_code": 502,
-            "message": str(error)
-            })
-  
+      results = await asyncio.gather(*[
+        Response(
+          question=f"topics:{params.topics}, difficulty:{params.difficulty}, no_of_questions:{c}",
+          instructions=instruction,
+            ).gemini(QuestionsOutput)
+        for c in parts
+        ])
+
+      questions = []
+      for data, error in results:
+        if error:
+          raise HTTPException(502, detail=str(error))
+        questions += data.questions
+      return {"status": "success", "data": {"questions": questions}}
+      
     except HTTPException as exc:
       raise exc
-  
-    except Exception as err:
-      raise HTTPException(
-        status_code=500,
-        detail="an unknown error occoured")
+    except Exception:
+      raise HTTPException(status_code=500, detail="an unknown error occurred")

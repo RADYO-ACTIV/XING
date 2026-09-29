@@ -17,7 +17,7 @@ class Response:
   def __init__(self, question, 
   instructions: Optional[str] = None):
     self.question = question
-    self.instructions = instructions or default_instruction
+    self.instructions = instructions or self.default_instruction
   
   def _validate_input(self):
     if not self.question or not self.question.strip():
@@ -39,7 +39,7 @@ class Response:
       config_instruction = self.instructions
       # api calling
       try:
-          interaction = _gclient.interactions.create(
+          interaction = self._gclient.interactions.create(
               model="gemini-3.6-flash",
               system_instruction=config_instruction,
               input=self.question,
@@ -65,7 +65,7 @@ class Response:
       return None, e
 
     try:
-      response = _dclient.chat.completions.create(
+      response = self._dclient.chat.completions.create(
           model="deepseek-flash",
           messages=[
               {"role": "system", "content": self.instructions},
