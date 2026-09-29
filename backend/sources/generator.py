@@ -10,9 +10,6 @@ from pydantic import BaseModel, ValidationError
 class Response:
   default_instruction="Your'e a helpful assistant"
   _gclient = genai.Client()
-  _dclient = OpenAI(
-    api_key=os.environ.get('DEEPSEEK_API_KEY'),
-    base_url="https://api.deepseek.com")
           
   def __init__(self, question, 
   instructions: Optional[str] = None):
@@ -57,34 +54,3 @@ class Response:
         return None, e
       except Exception as e:
         return None, e
-
-  def deepseek(self):
-    try:
-      self._validate_input()
-    except Exception as e:
-      return None, e
-
-    try:
-      response = self._dclient.chat.completions.create(
-          model="deepseek-flash",
-          messages=[
-              {"role": "system", "content": self.instructions},
-              {"role": "user", "content": self.question},
-          ],
-          stream=False,
-          reasoning_effort="high",
-          extra_body={"thinking": {"type": "enabled"}},
-          response_format={
-              'type': 'json_object'
-          })
-
-      content = response.choices[0].message.content
-      
-      if content:
-        # output = output_schema.model_validate_json(content)
-        return content, None
-      else:
-        raise Exception("invalid output")
-
-    except Exception as e:
-      return None, e
