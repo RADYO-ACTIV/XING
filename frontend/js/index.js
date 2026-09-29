@@ -71,6 +71,21 @@ const elements = {
 // ===========================
 function init() {
   // Cache all DOM elements
+  cacheElements();
+  
+  // Validate required elements exist
+  if (!validateDOM()) {
+    console.error('Required DOM elements not found');
+    return}
+  // Setup event listeners
+  setupFormHandlers()
+  setupBeginButtonHandler()
+  
+  // Show initial form
+  showInitialForm()}
+
+// Cache all DOM elements at startup
+function cacheElements() {
   elements.forms = document.querySelectorAll('.data');
   elements.dialog = document.getElementById('dialog');
   elements.beginButton = document.getElementById('begin');
@@ -95,13 +110,26 @@ function init() {
   elements.endGame =document.getElementById('endGame')
   elements.loading = document.getElementById('loading')
   
+  // Note: optionsContainer will be queried fresh each time we need it
+}
+
+// Validate that all required DOM elements exist
+function validateDOM() {
   const optionsCheck = document.querySelectorAll('.option');
-  // Setup event listeners
-  setupFormHandlers()
-  setupBeginButtonHandler()
   
-  // Show initial form
-  showInitialForm()}
+  return (
+    elements.forms?.length > 0 &&
+    elements.dialog &&
+    elements.beginButton &&
+    elements.timerDisplay &&
+    elements.questionsDisplay &&
+    elements.questionContainer &&
+    optionsCheck?.length > 0 &&
+    elements.nextButton &&
+    elements.score &&
+    elements.quizEnd
+  );
+}
 
 // Determine and show the appropriate initial form
 function showInitialForm() {
@@ -220,7 +248,7 @@ async function loadQuestions(endpoint, body) {
     }
     
     content = await response.json();
-    gameState.questions = content
+    gameState.questions = content.data.questions
     console.log(content)
     // Validate questions structure
     if (!Array.isArray(gameState.questions) || gameState.questions.length === 0) {
@@ -363,6 +391,7 @@ function displayCurrentQuestion() {
 }
 
 function displayOptions(question, questionIndex) {
+  // ✅ CRITICAL FIX: Query fresh NodeList each time
   const optionElements = document.querySelectorAll('.option');
   
   elements.response.classList.remove('correct', 'wrong');
@@ -384,6 +413,7 @@ function displayOptions(question, questionIndex) {
   setupOptionClickHandlers();
 }
 
+// ✅ NEW: Event delegation pattern for options
 let optionClickHandler = null;
 
 function setupOptionClickHandlers() {
@@ -455,14 +485,9 @@ function validateAnswer(questionIndex, optionIndex, feedback) {
   } else {
     optionElements[question.correct].classList.add('correct');
     wrongAnswer -= 1
-    maxTriesReached()
   }
 }
-function maxTriesReached(){
-  if(gameState.difficulty=='endless' && wrongAnswer == 0){
-  handleTimerComplete("You've Failed 5 Questions")
-  }
-}
+
 function setupNextButtonHandler() {
   // Remove any existing listener by cloning
   const newButton = elements.nextButton.cloneNode(true);
@@ -519,19 +544,19 @@ function displayFinalScore() {
     let totalPossible = 0
     let scoreAnimation = setInterval(pee, 100)
 
-    
     function pee(){
     const total = (LAST_QUESTION_INDEX+1)*POINTS_PER_QUESTION
     const percentage = Math.round((totalPossible / total) * 100);
-    
-    finalScoreElement.textContent = `${totalPossible} (${percentage}%)/${total}`;
-    numberfailed.textContent = `Number of Questions Failed: ${(LAST_QUESTION_INDEX+1) - questionsPassed}`
-    analyses.textContent = analysis(gameState.points)
-    if(totalPossible < gameState.points){
-      totalPossible++
-    }else{
-      clearInterval(scoreAnimation)
-    }}
+      finalScoreElement.textContent = `${totalPossible} (${percentage}%)/${total}`;
+      numberfailed.textContent = `Number of Questions Failed: ${(LAST_QUESTION_INDEX+1) - questionsPassed}`
+      analyses.textContent = analysis(gameState.points)
+      if(totalPossible < gameState.points){
+        totalPossible++
+      }else{
+        clearInterval(scoreAnimation)
+      }
+    }
+
     numberAnswered.textContent = `Number of Questions Answered: ${answerdQuestions}`
     numberPassed.textContent = `Number of Questions Passed: ${questionsPassed}`
     elements.newQuiz.addEventListener('click', ()=>{location.reload()})
@@ -568,5 +593,5 @@ function cleanup() {
 }
 
 // EVENT LISTENERS
-window.addEventListener('beforeunload', cleanup);
 document.addEventListener('DOMContentLoaded', init);
+window.addEventListener('beforeunload', cleanup);
