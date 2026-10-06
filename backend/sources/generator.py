@@ -33,20 +33,21 @@ class Response:
           return None, ValueError("output_schema must be a Pydantic BaseModel subclass")
   
       # values initialization
+      configs = types.GenerateContentConfig(
+      system_instruction=(self.instructions),
+      response_mime_type="application/json",
+      response_schema=output_schema,
+  )
       config_instruction = self.instructions
       # api calling
       try:
-          interaction = await asyncio.to_thread(self._gclient.interactions.create(
+          response = self._gclient.interactions.create(
               model="gemini-3.6-flash",
-              system_instruction=config_instruction,
-              input=self.question,
-              response_format={
-          "type": "text",
-          "mime_type": "application/json",
-          "schema": output_schema.model_json_schema()}))
+              contents=self.question,
+              config=configs)
           
-          if interaction.output_text:
-            output = output_schema.model_validate_json(interaction.output_text)
+          if response.output_text:
+            output = output_schema.model_validate_json(response.text)
             return output, None
           else:
             raise Exception('invalid output')
