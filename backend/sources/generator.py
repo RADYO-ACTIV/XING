@@ -38,10 +38,9 @@ class Response:
       response_mime_type="application/json",
       response_schema=output_schema,
   )
-      config_instruction = self.instructions
       # api calling
       try:
-          response = self._gclient.interactions.create(
+          response = self._gclient.models.generate_content(
               model="gemini-3.6-flash",
               contents=self.question,
               config=configs)
