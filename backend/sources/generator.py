@@ -45,7 +45,7 @@ class Response:
               contents=self.question,
               config=configs)
           
-          if response.output_text:
+          if response.text:
             output = output_schema.model_validate_json(response.text)
             return output, None
           else:
