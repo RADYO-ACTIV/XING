@@ -36,14 +36,15 @@ class Response:
       config_instruction = self.instructions
       # api calling
       try:
-          interaction = self._gclient.interactions.create(
+          interaction = await asyncio.to_thread(self._gclient.interactions.create(
               model="gemini-3.6-flash",
               system_instruction=config_instruction,
               input=self.question,
               response_format={
           "type": "text",
           "mime_type": "application/json",
-          "schema": output_schema.model_json_schema()})
+          "schema": output_schema.model_json_schema()}))
+          
           if interaction.output_text:
             output = output_schema.model_validate_json(interaction.output_text)
             return output, None
